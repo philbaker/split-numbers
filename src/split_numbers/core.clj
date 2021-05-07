@@ -2,7 +2,7 @@
   (:require [clojure.math.numeric-tower :as math]))
 
 (defn seperate-numbers 
-  "Takes an number and breaks it into a list of seperate of numbers"
+  "Takes a number and breaks it into a list of seperate of numbers"
   [n]
   (->> n
        math/abs
