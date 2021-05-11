@@ -1,57 +1,28 @@
 (ns split-numbers.core
   (:require [clojure.math.numeric-tower :as math]))
 
-(defn seperate-numbers 
-  "Takes a number and breaks it into a list of seperate of numbers"
-  [n]
+(defn convert-sign 
+  "Takes a number and a list of numbers, converts all numbers in the list to the sign of n"
+  [n nums]
+  (if (neg? n) 
+    (map #(- %) nums)
+  nums))
+
+(defn split-numbers-v
+  "Takes a list of numbers and returns a vector of component base elements"
+  [n coerce-int]
   (->> n
        math/abs
        (iterate #(quot % 10))
        (take-while pos?)
-       (map #(mod % 10))))
-
-(comment
-  (def seperate-numbers-quot (take-while pos?  (iterate #(quot % 10) 467)))
-  seperate-numbers-quot
-  (map #(mod % 10) seperate-numbers-quot) 
-  (seperate-numbers 467)
-  (seperate-numbers -467)
-)
-
-(defn convert-sign 
-  "Takes a number (n), seperates it into a list of seperate numbers and converts the sign of each number to the sign of n"
-  [n]
-  (let [nums (seperate-numbers n)]
-    (if (neg? n) 
-      (->> nums
-           (map #(- %)))
-      nums)))
-
-(comment
-  (convert-sign 467) 
-  (convert-sign -467)
-)
-
-(defn split-numbers-v 
-  "Takes a number and int coercion function (int, bigint) and returns a vector of component base elements"
-  [n coerce-int-f]
-  (->> (convert-sign n)
+       (map #(mod % 10))
+       (convert-sign n)
        (map-indexed vector)
-       reverse
-       (mapv #(coerce-int-f 
+       (reverse)
+       (mapv #(coerce-int
                (* 
                 (Math/pow 10 (first %)) 
                 (second %))))))
-
-(comment
-  (def mapped-vec (map-indexed vector '(7 6 4)))
-  mapped-vec
-  (reverse 
-   (mapv #(* 
-           (Math/pow 10 (first %)) 
-           (second %))
-         mapped-vec))
-  )
 
 (defmulti split-numbers 
   "Takes a number or string and returns a vector of component base elements"
@@ -71,6 +42,23 @@
     (number? (read-string s)) 
     (split-numbers (read-string s))
     (throw (Exception. "Argument must be numeric"))))
+
+(comment
+  (def n 467)
+  (def seperate (take-while pos? (iterate #(quot % 10) n)))
+  seperate
+  (def remainder (map #(mod % 10) seperate))
+  remainder
+  (convert-sign n remainder)
+  (def mapped-vec (map-indexed vector remainder))
+  mapped-vec
+  (reverse 
+   (mapv #(int 
+           (* 
+            (Math/pow 10 (first %)) 
+            (second %))) 
+         mapped-vec))
+)
 
 (comment
   (split-numbers 467)
