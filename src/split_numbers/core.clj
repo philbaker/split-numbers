@@ -19,10 +19,7 @@
        (convert-sign n)
        (map-indexed vector)
        (reverse)
-       (mapv #(coerce-int
-               (* 
-                (Math/pow 10 (first %)) 
-                (second %))))))
+       (mapv #(coerce-int (* (Math/pow 10 (first %)) (second %)))))) 
 
 (defmulti split-numbers 
   "Takes a number or string and returns a vector of component base elements"
@@ -43,14 +40,19 @@
     (split-numbers (read-string s))
     (throw (Exception. "Argument must be numeric"))))
 
+(defn -main [& args]
+  (println (split-numbers (first args))))
+
 (comment
-  (def n 467)
-  (def seperate (take-while pos? (iterate #(quot % 10) n)))
+  (def n -467)
+  (def abs-n (math/abs n))
+  (def seperate (take-while pos? (iterate #(quot % 10) abs-n)))
   seperate
   (def remainder (map #(mod % 10) seperate))
   remainder
-  (convert-sign n remainder)
-  (def mapped-vec (map-indexed vector remainder))
+  (def sign (convert-sign n remainder))
+  sign
+  (def mapped-vec (map-indexed vector sign))
   mapped-vec
   (reverse 
    (mapv #(int 
@@ -58,9 +60,7 @@
             (Math/pow 10 (first %)) 
             (second %))) 
          mapped-vec))
-)
 
-(comment
   (split-numbers 467)
   (split-numbers 39)
   (split-numbers 100)
@@ -68,13 +68,13 @@
   (split-numbers "467")
   (split-numbers "-321")
   (split-numbers 467.913993)
-  (split-numbers "ABC")
   (split-numbers 999999999) 
   (split-numbers -999999999)   
   (split-numbers 999999999999999999999999N)  
   (split-numbers -999999999999999999999999N)  
   (split-numbers 99999999999999999999999999N)  
   (split-numbers -99999999999999999999999999N)  
+  (split-numbers "ABC")
 
   (dotimes [_ 5] 
     (time (split-numbers 470)))
@@ -94,6 +94,3 @@
   (dotimes [_ 5]
     (time (split-numbers 989999999999999999999999N)))
 )
-
-(defn -main [& args]
-  (println (split-numbers (first args))))
