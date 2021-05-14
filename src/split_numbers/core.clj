@@ -9,7 +9,7 @@
   nums))
 
 (defn split-numbers-v
-  "Takes a list of numbers and returns a vector of component base elements"
+  "Takes a number and returns a vector of the number's component base elements"
   [n coerce-int]
   (->> n
        math/abs
