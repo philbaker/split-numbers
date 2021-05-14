@@ -72,12 +72,12 @@
   (split-numbers "467")
   (split-numbers "-321")
   (split-numbers 467.913993)
-  (split-numbers 999999999) 
-  (split-numbers -999999999)   
-  (split-numbers 999999999999999999999999N)  
-  (split-numbers -999999999999999999999999N)  
-  (split-numbers 99999999999999999999999999N)  
-  (split-numbers -99999999999999999999999999N)  
+  (split-numbers 999999999)
+  (split-numbers -999999999)
+  (split-numbers 999999999999999999999999N)
+  (split-numbers -999999999999999999999999N)
+  (split-numbers 99999999999999999999999999N)
+  (split-numbers -99999999999999999999999999N)
   (split-numbers "ABC")
 
   (dotimes [_ 5] 
