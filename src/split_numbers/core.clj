@@ -17,7 +17,7 @@
        (take-while pos?)
        (map #(mod % 10))
        (convert-sign n)
-       (map-indexed vector)
+       (map-indexed list)
        (reverse)
        (mapv #(coerce-int (* (Math/pow 10 (first %)) (second %)))))) 
 
@@ -45,21 +45,25 @@
 
 (comment
   (def n -467)
+  n
   (def abs-n (math/abs n))
+  abs-n 
   (def seperate (take-while pos? (iterate #(quot % 10) abs-n)))
   seperate
   (def remainder (map #(mod % 10) seperate))
   remainder
   (def sign (convert-sign n remainder))
-  sign
-  (def mapped-vec (map-indexed vector sign))
-  mapped-vec
-  (reverse 
-   (mapv #(int 
-           (* 
-            (Math/pow 10 (first %)) 
-            (second %))) 
-         mapped-vec))
+  sign 
+  (def index-list (reverse (map-indexed list sign)))
+  index-list
+  (def final-vec 
+    (mapv 
+      #(int 
+         (* 
+           (Math/pow 10 (first %)) 
+           (second %))) 
+      index-list))
+  final-vec
 
   (split-numbers 467)
   (split-numbers 39)
