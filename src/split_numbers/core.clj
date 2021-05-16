@@ -1,5 +1,6 @@
 (ns split-numbers.core
-  (:require [clojure.math.numeric-tower :as math]))
+  (:require [clojure.math.numeric-tower :as math]
+            [clojure.string :as str]))
 
 (defn convert-sign 
   "Takes a number and a list of numbers, converts all numbers in the list to the sign of n"
@@ -32,7 +33,15 @@
   (split-numbers-v n bigint))
 
 (defmethod split-numbers java.lang.Double [n]
-  (split-numbers-v (int n) int))
+  (let [split (str/split (str (math/abs n)) #"\.")
+        start (first split)
+        end (last split)
+        decimals (map #(* 
+                        (Math/pow 10 (- (inc (first %))))
+                        (read-string (second %))) 
+                      (map-indexed vector (str/split end #"")))
+        result (concat (split-numbers start) decimals)]
+    (convert-sign n result)))
 
 (defmethod split-numbers java.lang.String [s]
   (if 
@@ -71,7 +80,8 @@
   (split-numbers -321)
   (split-numbers "467")
   (split-numbers "-321")
-  (split-numbers 467.913993)
+  (split-numbers 467.913)
+  (split-numbers "150.57")
   (split-numbers 999999999)
   (split-numbers -999999999)
   (split-numbers 999999999999999999999999N)
