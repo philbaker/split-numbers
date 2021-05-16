@@ -9,7 +9,7 @@
     (map #(- %) nums)
   nums))
 
-(defn split-numbers-v
+(defn split-number-v
   "Takes a number and returns a vector of the number's component base elements"
   [n coerce-int]
   (->> n
@@ -22,35 +22,35 @@
        (reverse)
        (mapv #(coerce-int (* (Math/pow 10 (first %)) (second %)))))) 
 
-(defmulti split-numbers 
+(defmulti split-number 
   "Takes a number or string and returns a vector of component base elements"
   class)
 
-(defmethod split-numbers java.lang.Long [n]
-  (split-numbers-v n int))
+(defmethod split-number java.lang.Long [n]
+  (split-number-v n int))
 
-(defmethod split-numbers clojure.lang.BigInt [n]
-  (split-numbers-v n bigint))
+(defmethod split-number clojure.lang.BigInt [n]
+  (split-number-v n bigint))
 
-(defmethod split-numbers java.lang.Double [n]
+(defmethod split-number java.lang.Double [n]
   (let [split (str/split (str (math/abs n)) #"\.")
         start (first split)
         end (last split)
         decimals (map #(* 
-                        (Math/pow 10 (- (inc (first %))))
-                        (read-string (second %))) 
+                         (Math/pow 10 (- (inc (first %))))
+                         (read-string (second %))) 
                       (map-indexed vector (str/split end #"")))
-        result (concat (split-numbers start) decimals)]
+        result (concat (split-number start) decimals)]
     (convert-sign n result)))
 
-(defmethod split-numbers java.lang.String [s]
+(defmethod split-number java.lang.String [s]
   (if 
     (number? (read-string s)) 
-    (split-numbers (read-string s))
+    (split-number (read-string s))
     (throw (Exception. "Argument must be numeric"))))
 
 (defn -main [& args]
-  (println (split-numbers (first args))))
+  (println (split-number (first args))))
 
 (comment
   (def n -467)
@@ -74,37 +74,40 @@
       index-list))
   final-vec
 
-  (split-numbers 467)
-  (split-numbers 39)
-  (split-numbers 100)
-  (split-numbers -321)
-  (split-numbers "467")
-  (split-numbers "-321")
-  (split-numbers 467.913)
-  (split-numbers "150.57")
-  (split-numbers 999999999)
-  (split-numbers -999999999)
-  (split-numbers 999999999999999999999999N)
-  (split-numbers -999999999999999999999999N)
-  (split-numbers 99999999999999999999999999N)
-  (split-numbers -99999999999999999999999999N)
-  (split-numbers "ABC")
+  (split-number 467)
+  (split-number 39)
+  (split-number 100)
+  (split-number -321)
+  (split-number "467")
+  (split-number "-321")
+  (split-number 467.913)
+  (split-number "150.57")
+  (split-number 999999999)
+  (split-number -999999999)
+  (split-number 999999999999999999999999N)
+  (split-number -999999999999999999999999N)
+  (split-number 99999999999999999999999999N)
+  (split-number -99999999999999999999999999N)
+  (split-number "ABC")
 
   (dotimes [_ 5] 
-    (time (split-numbers 470)))
+    (time (split-number 470)))
 
   (dotimes [_ 5] 
-    (time (split-numbers -335)))
+    (time (split-number -335)))
 
   (dotimes [_ 5] 
-    (time (split-numbers 201.53575)))
+    (time (split-number 201.53575)))
 
   (dotimes [_ 5] 
-    (time (split-numbers "-109")))
+    (time (split-number "-109")))
+
+  (dotimes [_ 5] 
+    (time (split-number "-109")))
 
   (dotimes [_ 5]
-    (time (split-numbers 915799999)))
+    (time (split-number 915799999)))
 
   (dotimes [_ 5]
-    (time (split-numbers 989999999999999999999999N)))
+    (time (split-number 989999999999999999999999N)))
 )
