@@ -41,7 +41,7 @@
                          (read-string (second %))) 
                       (map-indexed vector (str/split end #"")))
         result (concat (split-number start) decimals)]
-    (convert-sign n result)))
+    (vec (convert-sign n result))))
 
 (defmethod split-number java.lang.String [s]
   (if 
