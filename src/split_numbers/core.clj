@@ -74,7 +74,9 @@
            (second %))) 
       index-list))
   final-vec
+)
 
+(comment
   ;; split-number (double)
   (def n2 350.21)
   n2
@@ -96,7 +98,9 @@
   d-decimals
   (def d-result (vec (concat (split-number d-start) d-decimals)))
   d-result
+)
 
+(comment
   (split-number 467)
   (split-number 39)
   (split-number 100)
@@ -112,7 +116,9 @@
   (split-number 99999999999999999999999999N)
   (split-number -99999999999999999999999999N)
   (split-number "ABC")
+)
 
+(comment
   (dotimes [_ 5] 
     (time (split-number 470)))
 
