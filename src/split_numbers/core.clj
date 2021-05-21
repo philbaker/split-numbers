@@ -53,6 +53,7 @@
   (println (split-number (first args))))
 
 (comment
+  ;; split-number-v
   (def n -467)
   n
   (def abs-n (math/abs n))
@@ -73,6 +74,28 @@
            (second %))) 
       index-list))
   final-vec
+
+  ;; split-number (double)
+  (def n2 350.21)
+  n2
+  (def d-split (str/split (str (math/abs n2)) #"\."))
+  d-split
+  (def d-start (first d-split))
+  d-start
+  (def d-end (last d-split))
+  d-end
+  (def d-index (map-indexed vector (str/split d-end #"")))
+  d-index
+  (def d-decimals 
+    (map #(* 
+           (Math/pow 10 (- (inc (first %))))
+           (read-string (second %))) 
+         d-index))
+  (Math/pow 10 -1)
+  (Math/pow 10 -2)
+  d-decimals
+  (def d-result (vec (concat (split-number d-start) d-decimals)))
+  d-result
 
   (split-number 467)
   (split-number 39)
