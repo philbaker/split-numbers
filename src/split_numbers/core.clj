@@ -131,9 +131,6 @@
   (dotimes [_ 5] 
     (time (split-number "-109")))
 
-  (dotimes [_ 5] 
-    (time (split-number "-109")))
-
   (dotimes [_ 5]
     (time (split-number 915799999)))
 
